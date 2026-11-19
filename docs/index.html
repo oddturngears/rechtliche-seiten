@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apps</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a class="home" href="index.html">Apps</a>
+  <nav class="lang" aria-label="Sprache / Language">
+    <button type="button" data-lang="de">Deutsch</button>
+    <button type="button" data-lang="en">English</button>
+  </nav>
+</header>
+<main>
+<section lang="de" class="de">
+<h1>Unsere Apps</h1>
+<ul class="apps">
+<li><strong>Quinovo</strong>: <a href="quinovo/privacy.html">Datenschutzerklärung</a> · <a href="quinovo/support.html">Support</a></li>
+<li><strong>Daily Logic</strong>: <a href="dailylogic/privacy.html">Datenschutzerklärung</a> · <a href="dailylogic/support.html">Support</a></li>
+<li><strong>DicePad</strong>: <a href="dicepad/privacy.html">Datenschutzerklärung</a> · <a href="dicepad/support.html">Support</a></li>
+</ul>
+<p class="links"><a href="imprint.html">Impressum</a></p>
+</section>
+<section lang="en" class="en">
+<h1>Our apps</h1>
+<ul class="apps">
+<li><strong>Quinovo</strong>: <a href="quinovo/privacy.html">Privacy policy</a> · <a href="quinovo/support.html">Support</a></li>
+<li><strong>Daily Logic</strong>: <a href="dailylogic/privacy.html">Privacy policy</a> · <a href="dailylogic/support.html">Support</a></li>
+<li><strong>DicePad</strong>: <a href="dicepad/privacy.html">Privacy policy</a> · <a href="dicepad/support.html">Support</a></li>
+</ul>
+<p class="links"><a href="imprint.html">Imprint</a></p>
+</section>
+</main>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search).get('lang');
+  var lang = p || ((navigator.language || 'en').toLowerCase().indexOf('de') === 0 ? 'de' : 'en');
+  function show(l) {
+    document.documentElement.lang = l;
+    document.body.setAttribute('data-lang', l);
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l);
+    });
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-lang')); });
+  });
+  show(lang === 'de' ? 'de' : 'en');
+})();
+</script>
+</body>
+</html>

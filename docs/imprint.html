@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Impressum / Imprint</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a class="home" href="index.html">Apps</a>
+  <nav class="lang" aria-label="Sprache / Language">
+    <button type="button" data-lang="de">Deutsch</button>
+    <button type="button" data-lang="en">English</button>
+  </nav>
+</header>
+<main>
+<section lang="de" class="de">
+<h1>Impressum</h1>
+<p>Angaben nach § 5 E-Commerce-Gesetz und Offenlegung nach § 25 Mediengesetz</p>
+<h2>Medieninhaber und Diensteanbieter</h2>
+<p><mark class="todo">[Vor- und Nachname]</mark><br><mark class="todo">[Straße und Hausnummer]</mark><br><mark class="todo">[PLZ Ort]</mark><br>Österreich<br>E-Mail: <mark class="todo">[E-Mail-Adresse]</mark></p>
+<p><strong>Unternehmensgegenstand:</strong> <mark class="todo">[Unternehmensgegenstand, z. B. Entwicklung und Vertrieb von Apps]</mark></p>
+<p><strong>Grundlegende Richtung:</strong> Informationen zu den Apps „Quinovo“, „Daily Logic“, „DicePad“ sowie Datenschutzerklärungen und Support.</p>
+<p class="links"><a href="index.html">Übersicht</a></p>
+</section>
+<section lang="en" class="en">
+<h1>Imprint</h1>
+<p>Information under Section 5 of the Austrian E-Commerce Act and disclosure under Section 25 of the Austrian Media Act</p>
+<h2>Media owner and service provider</h2>
+<p><mark class="todo">[Vor- und Nachname]</mark><br><mark class="todo">[Straße und Hausnummer]</mark><br><mark class="todo">[PLZ Ort]</mark><br>Austria<br>Email: <mark class="todo">[E-Mail-Adresse]</mark></p>
+<p><strong>Business purpose:</strong> <mark class="todo">[Business purpose, e.g. development and distribution of apps]</mark></p>
+<p><strong>Editorial line:</strong> Information about the apps “Quinovo”, “Daily Logic”, “DicePad”, privacy policies and support.</p>
+<p class="links"><a href="index.html">Overview</a></p>
+</section>
+</main>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search).get('lang');
+  var lang = p || ((navigator.language || 'en').toLowerCase().indexOf('de') === 0 ? 'de' : 'en');
+  function show(l) {
+    document.documentElement.lang = l;
+    document.body.setAttribute('data-lang', l);
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l);
+    });
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-lang')); });
+  });
+  show(lang === 'de' ? 'de' : 'en');
+})();
+</script>
+</body>
+</html>

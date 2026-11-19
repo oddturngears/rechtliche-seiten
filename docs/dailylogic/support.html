@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Logic – Support</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header>
+  <a class="home" href="../index.html">Apps</a>
+  <nav class="lang" aria-label="Sprache / Language">
+    <button type="button" data-lang="de">Deutsch</button>
+    <button type="button" data-lang="en">English</button>
+  </nav>
+</header>
+<main>
+<section lang="de" class="de">
+<h1>Support für „Daily Logic“</h1>
+<p>Du hast eine Frage, ein Problem oder eine Idee? Schreib uns an <mark class="todo">[E-Mail-Adresse]</mark>. Hilfreich sind die App-Version (steht in den Einstellungen) und dein Gerätemodell.</p>
+<h2>Häufige Fragen</h2>
+<h3>Wie stelle ich einen Kauf wieder her?</h3>
+<p>Öffne <em>Einstellungen → „Käufe wiederherstellen“</em>. Das funktioniert auch auf einem neuen Gerät, solange du dasselbe Google- bzw. Apple-Konto nutzt wie beim Kauf.</p>
+<h3>Wie kündige ich ein Abo?</h3>
+<p>Abos kündigst du im Store: auf Android im Play Store unter Profilbild → „Zahlungen und Abos“ → „Abos“, auf dem iPhone unter Einstellungen → dein Name → „Abonnements“. Das Löschen der App kündigt kein Abo.</p>
+<h3>Wie ändere ich meine Entscheidung zur Werbung?</h3>
+<p>Unter <em>Einstellungen → „Datenschutz &amp; Werbung“</em> kannst du deine Einwilligung jederzeit ändern oder widerrufen.</p>
+<h3>Kann ich meinen Fortschritt auf ein neues Gerät mitnehmen?</h3>
+<p>Derzeit nicht: Fortschritt und Münzen liegen nur auf dem Gerät. Gekaufte Inhalte kannst du auf dem neuen Gerät wiederherstellen.</p>
+<h3>Wie lösche ich meine Daten?</h3>
+<p>Die Daten auf deinem Gerät verschwinden, wenn du die App löschst. Für Daten zu Käufen schreib uns mit der Bestellnummer aus der Kaufbestätigung.</p>
+<p class="links"><a href="privacy.html">Datenschutzerklärung</a> · <a href="../imprint.html">Impressum</a></p>
+</section>
+<section lang="en" class="en">
+<h1>Support for “Daily Logic”</h1>
+<p>Have a question, a problem or an idea? Write to us at <mark class="todo">[E-Mail-Adresse]</mark>. It helps if you include the app version (shown in the settings) and your device model.</p>
+<h2>Frequently asked questions</h2>
+<h3>How do I restore a purchase?</h3>
+<p>Open <em>Settings → “Restore purchases”</em>. This also works on a new device, as long as you use the same Google or Apple account you bought with.</p>
+<h3>How do I cancel a subscription?</h3>
+<p>Subscriptions are managed in the store: on Android in the Play Store under your profile picture → “Payments & subscriptions” → “Subscriptions”, on iPhone under Settings → your name → “Subscriptions”. Deleting the app does not cancel a subscription.</p>
+<h3>How do I change my ad choice?</h3>
+<p>Under <em>Settings → “Privacy &amp; ads”</em> you can change or withdraw your consent at any time.</p>
+<h3>Can I move my progress to a new device?</h3>
+<p>Not at the moment: progress and coins are stored only on the device. You can restore purchased content on the new device.</p>
+<h3>How do I delete my data?</h3>
+<p>The data on your device is removed when you delete the app. For purchase data, write to us with the order number from your receipt.</p>
+<p class="links"><a href="privacy.html">Privacy policy</a> · <a href="../imprint.html">Imprint</a></p>
+</section>
+</main>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search).get('lang');
+  var lang = p || ((navigator.language || 'en').toLowerCase().indexOf('de') === 0 ? 'de' : 'en');
+  function show(l) {
+    document.documentElement.lang = l;
+    document.body.setAttribute('data-lang', l);
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l);
+    });
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-lang')); });
+  });
+  show(lang === 'de' ? 'de' : 'en');
+})();
+</script>
+</body>
+</html>

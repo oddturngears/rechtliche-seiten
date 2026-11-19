@@ -1,0 +1,77 @@
+{
+  "_hinweis": "Werte in eckigen Klammern sind Platzhalter und erscheinen auf den Seiten gelb markiert. Nach jeder Änderung: python build.py",
+  "updated": "13.11.2026",
+  "updated_en": "November 13, 2026",
+  "operator": {
+    "name": "[Vor- und Nachname]",
+    "street": "[Straße und Hausnummer]",
+    "city": "[PLZ Ort]",
+    "country_de": "Österreich",
+    "country_en": "Austria",
+    "email": "[E-Mail-Adresse]",
+    "business_de": "[Unternehmensgegenstand, z. B. Entwicklung und Vertrieb von Apps]",
+    "business_en": "[Business purpose, e.g. development and distribution of apps]",
+    "vat_id": "",
+    "trade_authority_de": "",
+    "trade_authority_en": ""
+  },
+  "online": {
+    "server_region_de": "[Serverstandort, z. B. EU (Frankfurt)]",
+    "server_region_en": "[server location, e.g. EU (Frankfurt)]",
+    "anonymous_account_days": "[30]",
+    "referral_months": "[24]"
+  },
+  "apps": [
+    {
+      "slug": "quinovo",
+      "name": "Quinovo",
+      "features": [
+        "ads",
+        "purchases",
+        "online",
+        "local_network",
+        "share",
+        "question_updates"
+      ],
+      "privacy_setting_de": "Einstellungen → „Datenschutz“",
+      "privacy_setting_en": "Settings → “Privacy”",
+      "restore_de": "Premium-Seite (über Shop oder Profil) → „Käufe wiederherstellen“",
+      "restore_en": "Premium page (via Shop or Profile) → “Restore purchases”",
+      "rewarded_de": "zum Beispiel für Energie oder zusätzliche Münzen",
+      "rewarded_en": "for example for energy or extra coins",
+      "report_question": true
+    },
+    {
+      "slug": "dailylogic",
+      "name": "Daily Logic",
+      "features": [
+        "ads",
+        "purchases",
+        "share"
+      ],
+      "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
+      "privacy_setting_en": "Settings → “Privacy & ads”",
+      "restore_de": "Einstellungen → „Käufe wiederherstellen“",
+      "restore_en": "Settings → “Restore purchases”",
+      "rewarded_de": "zum Beispiel für einen Hinweis oder doppelte Münzen",
+      "rewarded_en": "for example for a hint or double coins",
+      "report_question": false
+    },
+    {
+      "slug": "dicepad",
+      "name": "DicePad",
+      "features": [
+        "ads",
+        "banner",
+        "purchases"
+      ],
+      "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
+      "privacy_setting_en": "Settings → “Privacy & ads”",
+      "restore_de": "Shop → „Käufe wiederherstellen“",
+      "restore_en": "Shop → “Restore purchases”",
+      "rewarded_de": "zum Beispiel für einen zusätzlichen Wurf oder doppelte Münzen",
+      "rewarded_en": "for example for an extra roll or double coins",
+      "report_question": false
+    }
+  ]
+}
