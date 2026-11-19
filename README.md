@@ -33,15 +33,15 @@ Benennst du eine App um (Phase B, Namens-Schalter), änderst du `name` in `confi
 
 ## Online stellen (GitHub Pages, kostenlos)
 
-1. Auf github.com ein **öffentliches** Repository anlegen, zum Beispiel `apps`.
+1. In der GitHub-Organisation `oddturngears` das **öffentliche** Repository `rechtliche-seiten` anlegen (ohne README, .gitignore und Lizenz).
 2. Diesen Ordner hochladen (alle Dateien inklusive `docs/`).
 3. Im Repository unter **Settings → Pages**: „Deploy from a branch“, Branch `main`, Ordner `/docs`.
 4. Nach ein bis zwei Minuten sind die Seiten erreichbar:
 
 | Seite | Adresse |
 |---|---|
-| Übersicht | `https://<benutzername>.github.io/<repository>/` |
-| Impressum | `https://<benutzername>.github.io/<repository>/imprint.html` |
+| Übersicht | `https://oddturngears.github.io/rechtliche-seiten/` |
+| Impressum | `https://oddturngears.github.io/rechtliche-seiten/imprint.html` |
 | Quinovo | `…/quinovo/privacy.html` und `…/quinovo/support.html` |
 | Daily Logic | `…/dailylogic/privacy.html` und `…/dailylogic/support.html` |
 | DicePad | `…/dicepad/privacy.html` und `…/dicepad/support.html` |
