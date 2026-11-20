@@ -23,8 +23,8 @@
   },
   "apps": [
     {
-      "slug": "quinovo",
-      "name": "Quinovo",
+      "slug": "answerobics",
+      "name": "Answerobics",
       "features": [
         "ads",
         "purchases",

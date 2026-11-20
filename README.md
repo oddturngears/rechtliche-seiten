@@ -1,4 +1,4 @@
-# Rechtliche Seiten für Quinovo, Daily Logic und DicePad (A0.2)
+# Rechtliche Seiten für Answerobics, Daily Logic und DicePad (A0.2)
 
 Datenschutzerklärung und Support-Seite je App sowie ein gemeinsames Impressum, jeweils auf Deutsch und Englisch auf derselben Seite. Der Browser zeigt seine Sprache, oben rechts lässt sich umschalten. Die Seiten passen auf Handy und Desktop und folgen dem hellen bzw. dunklen Modus.
 
@@ -26,8 +26,8 @@ Benennst du eine App um (Phase B, Namens-Schalter), änderst du `name` in `confi
 
 1. In `config.json` ausfüllen: Name, Anschrift, E-Mail-Adresse und Unternehmensgegenstand. Nach der Gewerbeanmeldung (Phase C) kommen `vat_id` (UID-Nummer, falls vorhanden) und die Gewerbebehörde dazu.
 2. **Altersgrenze** im Abschnitt „Kinder“ bestätigen. Grundlage ist die Store-Zielgruppe ab 13 Jahren aus den Datenschutzangaben von Daily Logic. Danach die Markierung `[Altersgrenze prüfen]` in `build.py` entfernen.
-3. **Quinovo-Server:** den Supabase-Standort eintragen. Empfohlen ist eine EU-Region, zum Beispiel Frankfurt. Zwei Fristen in der Erklärung muss der Server auch wirklich einhalten:
-   - anonyme Konten nach `[30]` Tagen ohne Nutzung löschen. Heute ist das ein Hand-Befehl in `docs/ONLINE_DUELL_SETUP.md` von Quinovo. Für den Start braucht es einen automatischen Job (pg_cron).
+3. **Answerobics-Server:** den Supabase-Standort eintragen. Empfohlen ist eine EU-Region, zum Beispiel Frankfurt. Zwei Fristen in der Erklärung muss der Server auch wirklich einhalten:
+   - anonyme Konten nach `[30]` Tagen ohne Nutzung löschen. Heute ist das ein Hand-Befehl in `docs/ONLINE_DUELL_SETUP.md` von Answerobics (Projekt quiz_app). Für den Start braucht es einen automatischen Job (pg_cron).
    - Einladungsdaten nach höchstens `[24]` Monaten löschen. Dafür gibt es noch keinen Job.
 4. Mit Supabase und RevenueCat jeweils den Auftragsverarbeitungsvertrag (DPA) abschließen. Beide bieten ihn im Konto an.
 
@@ -42,7 +42,7 @@ Benennst du eine App um (Phase B, Namens-Schalter), änderst du `name` in `confi
 |---|---|
 | Übersicht | `https://oddturngears.github.io/rechtliche-seiten/` |
 | Impressum | `https://oddturngears.github.io/rechtliche-seiten/imprint.html` |
-| Quinovo | `…/quinovo/privacy.html` und `…/quinovo/support.html` |
+| Answerobics | `…/answerobics/privacy.html` und `…/answerobics/support.html` |
 | Daily Logic | `…/dailylogic/privacy.html` und `…/dailylogic/support.html` |
 | DicePad | `…/dicepad/privacy.html` und `…/dicepad/support.html` |
 
