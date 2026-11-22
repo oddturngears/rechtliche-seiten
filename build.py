@@ -3,6 +3,11 @@ Apps aus config.json nach docs/ (GitHub Pages). Jede Seite enthaelt Deutsch und 
 angezeigt wird die Sprache des Browsers, umschaltbar oben rechts.
 
 Aufruf:  python build.py
+
+Merkmale einer App ("features" in config.json): ads, banner, mediation (weitere
+Werbenetzwerke über AdMob), purchases, subscriptions (Abos), revenuecat (Käufe
+über RevenueCat statt direkt beim Store), online, local_network, share,
+question_updates.
 """
 import html
 import json
@@ -56,9 +61,9 @@ AD_PARTNERS = [
 ]
 
 
-def partner_list(lang: str) -> str:
+def partner_list(lang: str, mediation: bool = True) -> str:
     items = []
-    for name, de, en, url in AD_PARTNERS:
+    for name, de, en, url in AD_PARTNERS if mediation else AD_PARTNERS[:1]:
         who = de if lang == "de" else en
         label = "Datenschutzhinweise" if lang == "de" else "Privacy policy"
         items.append(f'<li><strong>{name}</strong> ({who}), <a href="{url}">{label}</a></li>')
@@ -70,7 +75,7 @@ def privacy_de(app: dict) -> str:
     n = html.escape(app["name"])
     s = []
     s.append(f"<h1>Datenschutzerklärung für die App „{n}“</h1>")
-    s.append(f'<p class="meta">Stand: {html.escape(CFG["updated"])}</p>')
+    s.append(f'<p class="meta">Stand: {html.escape(app.get("updated", CFG["updated"]))}</p>')
     s.append("<h2>1. Wer ist verantwortlich?</h2>")
     s.append(f"<p>Verantwortlich für die Datenverarbeitung in der App „{n}“ ist:</p>")
     s.append(operator_block("de"))
@@ -94,9 +99,13 @@ def privacy_de(app: dict) -> str:
 
     s.append("<h2>4. Werbung</h2>")
     banner = " (Banner und Videos)" if "banner" in f else ""
-    s.append(f"<p>Die App ist kostenlos und finanziert sich über Werbung{banner}. Die Anzeigen liefert "
-             "Google AdMob, das weitere Werbenetzwerke einbindet („Vermittlung“):</p>")
-    s.append(partner_list("de"))
+    if "mediation" in f:
+        s.append(f"<p>Die App ist kostenlos und finanziert sich über Werbung{banner}. Die Anzeigen liefert "
+                 "Google AdMob, das weitere Werbenetzwerke einbindet („Vermittlung“):</p>")
+    else:
+        s.append(f"<p>Die App ist kostenlos und finanziert sich über Werbung{banner}. Die Anzeigen liefert "
+                 "Google AdMob:</p>")
+    s.append(partner_list("de", "mediation" in f))
     s.append("<p><strong>Welche Daten:</strong> Werbe-ID deines Geräts (auf dem iPhone nur mit deiner "
              "Erlaubnis in der Tracking-Abfrage), IP-Adresse und daraus der ungefähre Standort, Angaben "
              "zu Gerät, Betriebssystem und App, Interaktionen mit Anzeigen sowie technische "
@@ -118,17 +127,30 @@ def privacy_de(app: dict) -> str:
              "soweit der Partner zertifiziert ist, sonst die Standardvertragsklauseln der "
              "EU-Kommission.</p>")
 
-    s.append("<h2>5. Käufe und Abos</h2>")
-    s.append("<p>Käufe und Abos bezahlst du über Google Play bzw. den App Store von Apple, nach deren "
-             "Bedingungen. Deine Zahlungsdaten erhalten wir nicht.</p>")
-    s.append("<p>Damit gekaufte Inhalte freigeschaltet werden und sich wiederherstellen lassen, nutzen "
-             'wir <strong>RevenueCat</strong> (RevenueCat, Inc., USA, <a href="https://www.revenuecat.com/privacy">'
-             "Datenschutzhinweise</a>) als Auftragsverarbeiter. Verarbeitet werden eine zufällige, "
-             "anonyme Kennung, die die App erzeugt, Angaben zum Kauf (Produkt, Zeitpunkt, Preis, "
-             "Transaktionsnummer des Stores, Abo-Status) sowie Angaben zu Gerät, Betriebssystem, "
-             "App-Version und die IP-Adresse. Rechtsgrundlage ist die Erfüllung des Kaufvertrags "
-             "(Art. 6 Abs. 1 lit. b DSGVO). Für die Übermittlung in die USA gilt das in Abschnitt 4 "
-             "Gesagte.</p>")
+    if "subscriptions" in f:
+        s.append("<h2>5. Käufe und Abos</h2>")
+        s.append("<p>Käufe und Abos bezahlst du über Google Play bzw. den App Store von Apple, nach deren "
+                 "Bedingungen. Deine Zahlungsdaten erhalten wir nicht.</p>")
+    else:
+        s.append("<h2>5. Käufe</h2>")
+        s.append("<p>Käufe bezahlst du über Google Play bzw. den App Store von Apple, nach deren "
+                 "Bedingungen. Deine Zahlungsdaten erhalten wir nicht.</p>")
+    if "revenuecat" not in f:
+        s.append("<p>Damit gekaufte Inhalte freigeschaltet werden und sich wiederherstellen lassen, fragt "
+                 "die App direkt beim Store ab, welche Käufe zu deinem Store-Konto gehören. Einen "
+                 "eigenen Server oder weitere Dienstleister nutzen wir dafür nicht. Google bzw. Apple "
+                 "verarbeiten die Kaufdaten in eigener Verantwortung nach ihren "
+                 "Datenschutzbestimmungen. Rechtsgrundlage ist die Erfüllung des Kaufvertrags "
+                 "(Art. 6 Abs. 1 lit. b DSGVO).</p>")
+    else:
+        s.append("<p>Damit gekaufte Inhalte freigeschaltet werden und sich wiederherstellen lassen, nutzen "
+                 'wir <strong>RevenueCat</strong> (RevenueCat, Inc., USA, <a href="https://www.revenuecat.com/privacy">'
+                 "Datenschutzhinweise</a>) als Auftragsverarbeiter. Verarbeitet werden eine zufällige, "
+                 "anonyme Kennung, die die App erzeugt, Angaben zum Kauf (Produkt, Zeitpunkt, Preis, "
+                 "Transaktionsnummer des Stores, Abo-Status) sowie Angaben zu Gerät, Betriebssystem, "
+                 "App-Version und die IP-Adresse. Rechtsgrundlage ist die Erfüllung des Kaufvertrags "
+                 "(Art. 6 Abs. 1 lit. b DSGVO). Für die Übermittlung in die USA gilt das in Abschnitt 4 "
+                 "Gesagte.</p>")
 
     nr = 6
     if "online" in f:
@@ -200,7 +222,7 @@ def privacy_en(app: dict) -> str:
     n = html.escape(app["name"])
     s = []
     s.append(f"<h1>Privacy policy for the app “{n}”</h1>")
-    s.append(f'<p class="meta">Last updated: {html.escape(CFG["updated_en"])}</p>')
+    s.append(f'<p class="meta">Last updated: {html.escape(app.get("updated_en", CFG["updated_en"]))}</p>')
     s.append("<h2>1. Who is responsible?</h2>")
     s.append(f"<p>The controller responsible for data processing in the app “{n}” is:</p>")
     s.append(operator_block("en"))
@@ -224,9 +246,13 @@ def privacy_en(app: dict) -> str:
 
     s.append("<h2>4. Advertising</h2>")
     banner = " (banners and videos)" if "banner" in f else ""
-    s.append(f"<p>The app is free and funded by advertising{banner}. Ads are delivered by Google AdMob, "
-             "which also works with other ad networks (“mediation”):</p>")
-    s.append(partner_list("en"))
+    if "mediation" in f:
+        s.append(f"<p>The app is free and funded by advertising{banner}. Ads are delivered by Google AdMob, "
+                 "which also works with other ad networks (“mediation”):</p>")
+    else:
+        s.append(f"<p>The app is free and funded by advertising{banner}. Ads are delivered by Google "
+                 "AdMob:</p>")
+    s.append(partner_list("en", "mediation" in f))
     s.append("<p><strong>What data:</strong> your device’s advertising ID (on iPhone only if you allow "
              "it in the tracking prompt), IP address and the approximate location derived from it, "
              "information about your device, operating system and app, interactions with ads, and "
@@ -246,16 +272,28 @@ def privacy_en(app: dict) -> str:
              "EU adequacy decision for the EU-US Data Privacy Framework where the partner is certified, "
              "otherwise on the European Commission’s standard contractual clauses.</p>")
 
-    s.append("<h2>5. Purchases and subscriptions</h2>")
-    s.append("<p>You pay for purchases and subscriptions through Google Play or Apple’s App Store, "
-             "under their terms. We never receive your payment data.</p>")
-    s.append("<p>To unlock purchased content and let you restore it, we use <strong>RevenueCat</strong> "
-             '(RevenueCat, Inc., USA, <a href="https://www.revenuecat.com/privacy">privacy policy</a>) as '
-             "a processor. It processes a random, anonymous identifier created by the app, purchase "
-             "details (product, time, price, store transaction ID, subscription status), information "
-             "about your device, operating system and app version, and your IP address. The legal basis "
-             "is performance of the purchase contract (Art. 6(1)(b) GDPR). Transfers to the USA are "
-             "covered as described in section 4.</p>")
+    if "subscriptions" in f:
+        s.append("<h2>5. Purchases and subscriptions</h2>")
+        s.append("<p>You pay for purchases and subscriptions through Google Play or Apple’s App Store, "
+                 "under their terms. We never receive your payment data.</p>")
+    else:
+        s.append("<h2>5. Purchases</h2>")
+        s.append("<p>You pay for purchases through Google Play or Apple’s App Store, under their terms. "
+                 "We never receive your payment data.</p>")
+    if "revenuecat" not in f:
+        s.append("<p>To unlock purchased content and let you restore it, the app asks the store directly "
+                 "which purchases belong to your store account. We don’t use a server of our own or any "
+                 "other service provider for this. Google or Apple process the purchase data as "
+                 "independent controllers under their own privacy policies. The legal basis is "
+                 "performance of the purchase contract (Art. 6(1)(b) GDPR).</p>")
+    else:
+        s.append("<p>To unlock purchased content and let you restore it, we use <strong>RevenueCat</strong> "
+                 '(RevenueCat, Inc., USA, <a href="https://www.revenuecat.com/privacy">privacy policy</a>) as '
+                 "a processor. It processes a random, anonymous identifier created by the app, purchase "
+                 "details (product, time, price, store transaction ID, subscription status), information "
+                 "about your device, operating system and app version, and your IP address. The legal basis "
+                 "is performance of the purchase contract (Art. 6(1)(b) GDPR). Transfers to the USA are "
+                 "covered as described in section 4.</p>")
 
     nr = 6
     if "online" in f:
@@ -333,10 +371,11 @@ def support_de(app: dict) -> str:
     s.append("<h3>Wie stelle ich einen Kauf wieder her?</h3>")
     s.append(f"<p>Öffne <em>{html.escape(app['restore_de'])}</em>. Das funktioniert auch auf einem neuen "
              "Gerät, solange du dasselbe Google- bzw. Apple-Konto nutzt wie beim Kauf.</p>")
-    s.append("<h3>Wie kündige ich ein Abo?</h3>")
-    s.append("<p>Abos kündigst du im Store: auf Android im Play Store unter Profilbild → „Zahlungen und "
-             "Abos“ → „Abos“, auf dem iPhone unter Einstellungen → dein Name → „Abonnements“. Das "
-             "Löschen der App kündigt kein Abo.</p>")
+    if "subscriptions" in f:
+        s.append("<h3>Wie kündige ich ein Abo?</h3>")
+        s.append("<p>Abos kündigst du im Store: auf Android im Play Store unter Profilbild → „Zahlungen und "
+                 "Abos“ → „Abos“, auf dem iPhone unter Einstellungen → dein Name → „Abonnements“. Das "
+                 "Löschen der App kündigt kein Abo.</p>")
     s.append("<h3>Wie ändere ich meine Entscheidung zur Werbung?</h3>")
     s.append(f"<p>Unter <em>{html.escape(app['privacy_setting_de'])}</em> kannst du deine Einwilligung "
              "jederzeit ändern oder widerrufen.</p>")
@@ -349,8 +388,11 @@ def support_de(app: dict) -> str:
         delete += ("Daten aus Online-Duellen löschen wir automatisch nach sieben Tagen. Für alles "
                    "Weitere, etwa Einladungen oder Käufe, schreib uns mit deinem Einladungscode bzw. der "
                    "Bestellnummer.</p>")
-    else:
+    elif "revenuecat" in f:
         delete += "Für Daten zu Käufen schreib uns mit der Bestellnummer aus der Kaufbestätigung.</p>"
+    else:
+        delete += ("Außerhalb deines Geräts speichern wir keine Daten über dich. Deine Käufe verwaltet "
+                   "Google bzw. Apple in deinem Store-Konto.</p>")
     s.append(delete)
     if app.get("report_question"):
         s.append("<h3>Mir ist eine falsche Frage aufgefallen.</h3>")
@@ -371,10 +413,11 @@ def support_en(app: dict) -> str:
     s.append("<h3>How do I restore a purchase?</h3>")
     s.append(f"<p>Open <em>{html.escape(app['restore_en'])}</em>. This also works on a new device, as "
              "long as you use the same Google or Apple account you bought with.</p>")
-    s.append("<h3>How do I cancel a subscription?</h3>")
-    s.append("<p>Subscriptions are managed in the store: on Android in the Play Store under your profile "
-             "picture → “Payments & subscriptions” → “Subscriptions”, on iPhone under Settings → your "
-             "name → “Subscriptions”. Deleting the app does not cancel a subscription.</p>")
+    if "subscriptions" in f:
+        s.append("<h3>How do I cancel a subscription?</h3>")
+        s.append("<p>Subscriptions are managed in the store: on Android in the Play Store under your profile "
+                 "picture → “Payments & subscriptions” → “Subscriptions”, on iPhone under Settings → your "
+                 "name → “Subscriptions”. Deleting the app does not cancel a subscription.</p>")
     s.append("<h3>How do I change my ad choice?</h3>")
     s.append(f"<p>Under <em>{html.escape(app['privacy_setting_en'])}</em> you can change or withdraw your "
              "consent at any time.</p>")
@@ -387,8 +430,11 @@ def support_en(app: dict) -> str:
         delete += ("We delete online duel data automatically after seven days. For anything else, such "
                    "as invitations or purchases, write to us with your invitation code or order "
                    "number.</p>")
-    else:
+    elif "revenuecat" in f:
         delete += "For purchase data, write to us with the order number from your receipt.</p>"
+    else:
+        delete += ("We don’t store any data about you outside your device. Your purchases are managed "
+                   "by Google or Apple in your store account.</p>")
     s.append(delete)
     if app.get("report_question"):
         s.append("<h3>I found a wrong question.</h3>")

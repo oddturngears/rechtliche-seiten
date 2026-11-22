@@ -27,7 +27,10 @@
       "name": "Answerobics",
       "features": [
         "ads",
+        "mediation",
         "purchases",
+        "subscriptions",
+        "revenuecat",
         "online",
         "local_network",
         "share",
@@ -46,7 +49,10 @@
       "name": "Daily Logic",
       "features": [
         "ads",
+        "mediation",
         "purchases",
+        "subscriptions",
+        "revenuecat",
         "share"
       ],
       "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
@@ -63,7 +69,10 @@
       "features": [
         "ads",
         "banner",
-        "purchases"
+        "mediation",
+        "purchases",
+        "subscriptions",
+        "revenuecat"
       ],
       "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
       "privacy_setting_en": "Settings → “Privacy & ads”",
@@ -71,6 +80,45 @@
       "restore_en": "Shop → “Restore purchases”",
       "rewarded_de": "zum Beispiel für einen zusätzlichen Wurf oder doppelte Münzen",
       "rewarded_en": "for example for an extra roll or double coins",
+      "report_question": false
+    },
+    {
+      "slug": "wortweber",
+      "name": "Wortweber",
+      "updated": "22.11.2026",
+      "updated_en": "November 22, 2026",
+      "features": [
+        "ads",
+        "mediation",
+        "purchases",
+        "subscriptions",
+        "revenuecat",
+        "share"
+      ],
+      "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
+      "privacy_setting_en": "Settings → “Privacy & ads”",
+      "restore_de": "Einstellungen → „Käufe wiederherstellen“",
+      "restore_en": "Settings → “Restore purchases”",
+      "rewarded_de": "zum Beispiel für einen Hinweis oder doppelte Coins",
+      "rewarded_en": "for example for a hint or double coins",
+      "report_question": false
+    },
+    {
+      "slug": "harborflow",
+      "name": "Harbor Flow",
+      "_hinweis": "Godot-Spiel, zuerst Android, iOS folgt. Werbung nur über AdMob (eigenes Plugin, Einwilligung über Googles UMP), keine Vermittlung; Käufe direkt über Google Play Billing (später App Store), kein Abo, kein RevenueCat. Spielstand nur lokal, kein Konto, keine Analyse, kein eigener Server. Menüpfade passend zur geplanten Einstellungsseite (A6.6) – nach deren Bau abgleichen.",
+      "updated": "22.11.2026",
+      "updated_en": "November 22, 2026",
+      "features": [
+        "ads",
+        "purchases"
+      ],
+      "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
+      "privacy_setting_en": "Settings → “Privacy & ads”",
+      "restore_de": "Einstellungen → „Käufe wiederherstellen“",
+      "restore_en": "Settings → “Restore purchases”",
+      "rewarded_de": "zum Beispiel für einen Hinweis, einen Zusatzanleger oder doppelte Münzen",
+      "rewarded_en": "for example for a hint, an extra dock or double coins",
       "report_question": false
     }
   ]
