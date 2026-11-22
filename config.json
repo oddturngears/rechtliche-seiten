@@ -106,12 +106,14 @@
     {
       "slug": "harborflow",
       "name": "Harbor Flow",
-      "_hinweis": "Godot-Spiel, zuerst Android, iOS folgt. Werbung nur über AdMob (eigenes Plugin, Einwilligung über Googles UMP), keine Vermittlung; Käufe direkt über Google Play Billing (später App Store), kein Abo, kein RevenueCat. Spielstand nur lokal, kein Konto, keine Analyse, kein eigener Server. Menüpfade passend zur geplanten Einstellungsseite (A6.6) – nach deren Bau abgleichen.",
+      "_hinweis": "Godot-Spiel, zuerst Android, iOS folgt. Werbung über AdMob (eigenes Plugin, Einwilligung über Googles UMP) mit Vermittlung an AppLovin, Unity Ads und Liftoff Monetize (A6.17, 22.11.2026); Käufe direkt über Google Play Billing (später App Store), kein Abo, kein RevenueCat. Spielstand nur lokal, kein Konto, keine Analyse, kein eigener Server. Teilen-Knopf beim gelösten Tagesrätsel (nur Teilen-Menü). Menüpfade am 22.11.2026 mit der Harbor-Flow-Sitzung abgeglichen.",
       "updated": "22.11.2026",
       "updated_en": "November 22, 2026",
       "features": [
         "ads",
-        "purchases"
+        "mediation",
+        "purchases",
+        "share"
       ],
       "privacy_setting_de": "Einstellungen → „Datenschutz & Werbung“",
       "privacy_setting_en": "Settings → “Privacy & ads”",
