@@ -7,7 +7,8 @@ Aufruf:  python build.py
 Merkmale einer App ("features" in config.json): ads, banner, mediation (weitere
 Werbenetzwerke über AdMob), purchases, subscriptions (Abos), revenuecat (Käufe
 über RevenueCat statt direkt beim Store), online, local_network, share,
-question_updates.
+question_updates, rankings (Ranglisten, Liga, Aufzeichnungen, Herausforderungen),
+cloud_save (Sicherung des Spielstands auf dem Server).
 """
 import html
 import json
@@ -80,22 +81,37 @@ def privacy_de(app: dict) -> str:
     s.append(f"<p>Verantwortlich für die Datenverarbeitung in der App „{n}“ ist:</p>")
     s.append(operator_block("de"))
     s.append("<h2>2. Das Wichtigste in Kürze</h2><ul>")
-    if "online" in f:
+    if "online" in f and "cloud_save" in f:
+        s.append("<li>Du brauchst kein Konto mit Namen, E-Mail-Adresse oder Passwort. Für die "
+                 "Online-Funktionen und die Sicherung deines Spielstands legt die App ein anonymes "
+                 "Konto an (Abschnitt 6).</li>")
+    elif "online" in f:
         s.append("<li>Du brauchst kein Konto mit Namen, E-Mail-Adresse oder Passwort. Nur für das "
                  "Online-Duell und Einladungen legt die App ein anonymes Konto an (Abschnitt 6).</li>")
     else:
         s.append("<li>Du brauchst kein Konto. Wir fragen weder Namen noch E-Mail-Adresse ab.</li>")
-    s.append("<li>Fortschritt, Statistiken, Münzen und Einstellungen speichert die App nur auf deinem Gerät.</li>")
+    if "cloud_save" in f:
+        s.append("<li>Fortschritt, Statistiken, Münzen und Einstellungen speichert die App auf deinem "
+                 "Gerät. Eine Sicherungskopie deines Spielstands liegt auf unserem Server.</li>")
+    else:
+        s.append("<li>Fortschritt, Statistiken, Münzen und Einstellungen speichert die App nur auf deinem Gerät.</li>")
     s.append("<li>Die App zeigt Werbung. Ob sie personalisiert wird, entscheidest du im "
              "Einwilligungsdialog und kannst es jederzeit ändern.</li>")
     s.append("<li>Käufe wickeln Google Play bzw. der App Store ab. Zahlungsdaten erhalten wir nicht.</li>")
     s.append("<li>Wir setzen keine eigenen Analyse- oder Tracking-Werkzeuge ein.</li></ul>")
 
     s.append("<h2>3. Daten auf deinem Gerät</h2>")
-    s.append("<p>Die App speichert deinen Fortschritt, Statistiken, Münzen, Käufe-Status und "
-             "Einstellungen lokal auf deinem Gerät. Diese Daten werden nicht an uns übertragen. "
-             "Wenn du die App löschst, werden sie ebenfalls gelöscht. Rechtsgrundlage ist die "
-             "Bereitstellung der von dir genutzten App (Art. 6 Abs. 1 lit. b DSGVO, § 165 Abs. 3 TKG 2021).</p>")
+    if "cloud_save" in f:
+        s.append("<p>Die App speichert deinen Fortschritt, Statistiken, Münzen, Käufe-Status und "
+                 "Einstellungen lokal auf deinem Gerät. Wenn du die App löschst, werden sie dort "
+                 "ebenfalls gelöscht. Was davon zusätzlich auf unserem Server gesichert wird, steht "
+                 "weiter unten unter „Sicherung des Spielstands“. Rechtsgrundlage ist die "
+                 "Bereitstellung der von dir genutzten App (Art. 6 Abs. 1 lit. b DSGVO, § 165 Abs. 3 TKG 2021).</p>")
+    else:
+        s.append("<p>Die App speichert deinen Fortschritt, Statistiken, Münzen, Käufe-Status und "
+                 "Einstellungen lokal auf deinem Gerät. Diese Daten werden nicht an uns übertragen. "
+                 "Wenn du die App löschst, werden sie ebenfalls gelöscht. Rechtsgrundlage ist die "
+                 "Bereitstellung der von dir genutzten App (Art. 6 Abs. 1 lit. b DSGVO, § 165 Abs. 3 TKG 2021).</p>")
 
     s.append("<h2>4. Werbung</h2>")
     banner = " (Banner und Videos)" if "banner" in f else ""
@@ -154,13 +170,21 @@ def privacy_de(app: dict) -> str:
 
     nr = 6
     if "online" in f:
-        s.append(f"<h2>{nr}. Online-Duell und Einladungen</h2>")
-        s.append("<p>Für Duelle gegen andere Spielerinnen und Spieler und für Einladungscodes nutzt die "
-                 "App einen Server von <strong>Supabase</strong> (Supabase Inc., USA) als "
+        extra = "rankings" in f or "cloud_save" in f
+        s.append(f"<h2>{nr}. {'Server, Online-Duell und Einladungen' if extra else 'Online-Duell und Einladungen'}</h2>")
+        s.append("<p>Für Duelle gegen andere Spielerinnen und Spieler, für Einladungscodes"
+                 + (", Ranglisten" if "rankings" in f else "")
+                 + (" und die Sicherung deines Spielstands" if "cloud_save" in f else "")
+                 + " nutzt die App einen Server von <strong>Supabase</strong> (Supabase Inc., USA) als "
                  f"Auftragsverarbeiter. Standort der Server: {v(ON['server_region_de'])}.</p>")
-        s.append("<p>Wenn du das Online-Duell oder Einladungen zum ersten Mal nutzt, legt die App ein "
-                 "<strong>anonymes Konto</strong> an: eine zufällige Kennung ohne E-Mail-Adresse oder "
-                 "Telefonnummer.</p>")
+        if "cloud_save" in f:
+            s.append("<p>Sobald du in der App Fortschritt machst oder eine Online-Funktion nutzt, legt "
+                     "die App ein <strong>anonymes Konto</strong> an: eine zufällige Kennung ohne "
+                     "E-Mail-Adresse oder Telefonnummer, die an dieser Installation der App hängt.</p>")
+        else:
+            s.append("<p>Wenn du das Online-Duell oder Einladungen zum ersten Mal nutzt, legt die App ein "
+                     "<strong>anonymes Konto</strong> an: eine zufällige Kennung ohne E-Mail-Adresse oder "
+                     "Telefonnummer.</p>")
         s.append("<p><strong>Welche Daten:</strong> die anonyme Kennung, der Spielname, den du in der App "
                  "festlegst, Avatar, Rahmen und Level, die gewählte Kategorie, Fragen, deine Antworten "
                  "und Punkte je Runde, Zeitpunkte sowie Verbindungsdaten (IP-Adresse, Zeitpunkt). Dein "
@@ -169,9 +193,9 @@ def privacy_de(app: dict) -> str:
                  "und die daraus gutgeschriebenen Belohnungen.</p>")
         s.append("<p><strong>Wie lange:</strong> Einträge der Spielersuche höchstens einen Tag, "
                  "Duell-Daten sieben Tage nach Spielende. Anonyme Konten löschen wir nach "
-                 f"{v(ON['anonymous_account_days'])} Tagen ohne Nutzung. Einladungsdaten speichern wir, "
-                 "solange sie für die Gutschrift nötig sind, längstens "
-                 f"{v(ON['referral_months'])} Monate.</p>")
+                 f"{v(ON['anonymous_account_days'])} Tagen ohne Nutzung, zusammen mit den Daten, die "
+                 "daran hängen. Einladungsdaten speichern wir, solange sie für die Gutschrift nötig "
+                 f"sind, längstens {v(ON['referral_months'])} Monate.</p>")
         s.append("<p><strong>Rechtsgrundlage:</strong> Erfüllung des Vertrags über die von dir gewählte "
                  "Funktion (Art. 6 Abs. 1 lit. b DSGVO). Für die Übermittlung in die USA gilt das in "
                  "Abschnitt 4 Gesagte.</p>")
@@ -179,6 +203,58 @@ def privacy_de(app: dict) -> str:
             s.append("<p>Über denselben Server lädt die App neue Fragen. Dabei werden außer den technisch "
                      "nötigen Verbindungsdaten (IP-Adresse, Zeitpunkt) keine Daten über dich "
                      "übertragen.</p>")
+        nr += 1
+    if "online" in f and "rankings" in f:
+        vis = html.escape(app.get("rankings_setting_de", "Einstellungen → „In Ranglisten anzeigen“"))
+        s.append(f"<h2>{nr}. Ranglisten, Liga, Aufzeichnungen und Herausforderungen</h2>")
+        s.append("<p><strong>Ranglisten:</strong> Für die Monatsranglisten (Daily Challenge und Survival) "
+                 "gehen an den Server: Startzeit je Runde, Punkte und Antwortzeit der Daily Challenge, "
+                 "die Werte eines Survival-Laufs (beantwortete und richtige Fragen, Wiederbelebungen, "
+                 "Spielzeit), dein Spielname, Avatar und Rahmen sowie erhaltene Belohnungen. Andere "
+                 "sehen deinen Spielnamen (oder „Spieler“ mit einer Nummer), Avatar, Rahmen, Platz "
+                 "und Wert.</p>")
+        s.append("<p><strong>Liga:</strong> Aus deinen Arena-Duellen berechnet der Server Punkte und "
+                 "Ergebnisse je Monat.</p>")
+        s.append("<p><strong>Aufzeichnungen:</strong> Findet sich in der Arena kein Live-Gegner, kann die "
+                 "App ein beendetes Duell eines echten Spielers abspielen. Dein Spielname, Avatar, "
+                 "Rahmen, Level sowie deine Antworten und Antwortzeiten aus einem Duell können so bis "
+                 "zu sieben Tage lang anderen gezeigt werden.</p>")
+        s.append("<p><strong>Herausforderungen:</strong> Forderst du einen Freund mit einem Code heraus, "
+                 "sieht er deinen Spielnamen, Avatar, Rahmen, Level, deine Antworten und dein "
+                 "Ergebnis.</p>")
+        s.append("<p><strong>Melden:</strong> Spielnamen in Ranglisten lassen sich melden. Wir speichern, "
+                 "wer welchen Eintrag gemeldet hat, und prüfen gemeldete Namen.</p>")
+        s.append(f"<p><strong>Deine Wahl:</strong> Schaltest du <em>{vis}</em> aus, erscheinst du in "
+                 "keiner Rangliste, wirst nicht als Aufzeichnung gezeigt und erhältst keine "
+                 "Ranglisten-Belohnungen.</p>")
+        s.append("<p><strong>Wie lange:</strong> Ranglisten- und Liga-Daten, Belohnungen und Meldungen "
+                 "13 Monate, Aufzeichnungen und Herausforderungen 30 Tage.</p>")
+        s.append("<p><strong>Rechtsgrundlage:</strong> Erfüllung des Vertrags über die von dir gewählte "
+                 "Funktion (Art. 6 Abs. 1 lit. b DSGVO); für das Prüfen gemeldeter Namen unser "
+                 "berechtigtes Interesse an einem fairen und respektvollen Spiel (Art. 6 Abs. 1 lit. f "
+                 "DSGVO).</p>")
+        nr += 1
+    if "online" in f and "cloud_save" in f:
+        s.append(f"<h2>{nr}. Sicherung des Spielstands</h2>")
+        s.append("<p>Damit dein Fortschritt nicht verloren geht, legt die App eine Kopie deines "
+                 "Spielstands auf dem Server ab und gleicht sie beim Start und beim Verlassen der App "
+                 "ab: Münzen, Erfahrung und Level, Erfolge, Statistik, freigeschaltete Inhalte, "
+                 "Spielname und Avatar, Serien, Tagesaufgaben, Liga-Stand und Bestwerte. Nicht "
+                 "gesichert werden Abos (die stellt der Store wieder her), Energie und die "
+                 "Einstellungen des Geräts.</p>")
+        s.append("<p><strong>Wie lange:</strong> Eine Kopie, die sich 400 Tage nicht geändert hat, "
+                 "löschen wir. Mit dem anonymen Konto verschwindet auch die Kopie.</p>")
+        s.append("<p><strong>Rechtsgrundlage:</strong> Bereitstellung der App mit gesichertem "
+                 "Fortschritt (Art. 6 Abs. 1 lit. b DSGVO).</p>")
+        nr += 1
+    if app.get("report_question"):
+        s.append(f"<h2>{nr}. Fragen melden</h2>")
+        s.append("<p>Meldest du eine Frage, öffnet die App dein E-Mail-Programm mit einer vorbereiteten "
+                 "Nachricht (Kennung und Text der Frage, deine Anmerkung). Die E-Mail schickst du selbst "
+                 "ab. Wir erhalten dann deine E-Mail-Adresse und den Inhalt, nutzen beides nur, um die "
+                 "Frage zu prüfen und dir gegebenenfalls zu antworten, und löschen die E-Mail, sobald "
+                 "die Meldung erledigt ist. Rechtsgrundlage ist unser berechtigtes Interesse an "
+                 "richtigen Fragen (Art. 6 Abs. 1 lit. f DSGVO).</p>")
         nr += 1
     if "local_network" in f:
         s.append(f"<h2>{nr}. Lokales Match im selben WLAN</h2>")
@@ -227,22 +303,37 @@ def privacy_en(app: dict) -> str:
     s.append(f"<p>The controller responsible for data processing in the app “{n}” is:</p>")
     s.append(operator_block("en"))
     s.append("<h2>2. The essentials</h2><ul>")
-    if "online" in f:
+    if "online" in f and "cloud_save" in f:
+        s.append("<li>You don’t need an account with a name, email address or password. For the "
+                 "online features and the backup of your progress, the app creates an anonymous "
+                 "account (section 6).</li>")
+    elif "online" in f:
         s.append("<li>You don’t need an account with a name, email address or password. Only for "
                  "online duels and invitations does the app create an anonymous account (section 6).</li>")
     else:
         s.append("<li>You don’t need an account. We never ask for your name or email address.</li>")
-    s.append("<li>Your progress, statistics, coins and settings are stored only on your device.</li>")
+    if "cloud_save" in f:
+        s.append("<li>Your progress, statistics, coins and settings are stored on your device. A backup "
+                 "copy of your progress is kept on our server.</li>")
+    else:
+        s.append("<li>Your progress, statistics, coins and settings are stored only on your device.</li>")
     s.append("<li>The app shows ads. You decide in the consent dialog whether they are personalized, "
              "and you can change that at any time.</li>")
     s.append("<li>Purchases are handled by Google Play or the App Store. We never receive payment data.</li>")
     s.append("<li>We don’t use any analytics or tracking tools of our own.</li></ul>")
 
     s.append("<h2>3. Data on your device</h2>")
-    s.append("<p>The app stores your progress, statistics, coins, purchase status and settings locally "
-             "on your device. This data is not sent to us and is deleted when you uninstall the app. "
-             "The legal basis is providing the app you use (Art. 6(1)(b) GDPR, Section 165(3) of the "
-             "Austrian Telecommunications Act 2021).</p>")
+    if "cloud_save" in f:
+        s.append("<p>The app stores your progress, statistics, coins, purchase status and settings locally "
+                 "on your device, where they are deleted when you uninstall the app. What is also backed "
+                 "up on our server is described below under “Backup of your progress”. The legal basis is "
+                 "providing the app you use (Art. 6(1)(b) GDPR, Section 165(3) of the Austrian "
+                 "Telecommunications Act 2021).</p>")
+    else:
+        s.append("<p>The app stores your progress, statistics, coins, purchase status and settings locally "
+                 "on your device. This data is not sent to us and is deleted when you uninstall the app. "
+                 "The legal basis is providing the app you use (Art. 6(1)(b) GDPR, Section 165(3) of the "
+                 "Austrian Telecommunications Act 2021).</p>")
 
     s.append("<h2>4. Advertising</h2>")
     banner = " (banners and videos)" if "banner" in f else ""
@@ -297,13 +388,24 @@ def privacy_en(app: dict) -> str:
 
     nr = 6
     if "online" in f:
-        s.append(f"<h2>{nr}. Online duels and invitations</h2>")
-        s.append("<p>For duels against other players and for invitation codes, the app uses a server "
+        extra = "rankings" in f or "cloud_save" in f
+        s.append(f"<h2>{nr}. {'Server, online duels and invitations' if extra else 'Online duels and invitations'}</h2>")
+        uses = ["duels against other players", "invitation codes"]
+        if "rankings" in f:
+            uses.append("rankings")
+        if "cloud_save" in f:
+            uses.append("the backup of your progress")
+        s.append("<p>For " + ", ".join(uses[:-1]) + " and " + uses[-1] + ", the app uses a server "
                  "run by <strong>Supabase</strong> (Supabase Inc., USA) as a processor. Server location: "
                  f"{v(ON['server_region_en'])}.</p>")
-        s.append("<p>The first time you use online duels or invitations, the app creates an "
-                 "<strong>anonymous account</strong>: a random identifier without an email address or "
-                 "phone number.</p>")
+        if "cloud_save" in f:
+            s.append("<p>As soon as you make progress in the app or use an online feature, the app "
+                     "creates an <strong>anonymous account</strong>: a random identifier without an email "
+                     "address or phone number, tied to this installation of the app.</p>")
+        else:
+            s.append("<p>The first time you use online duels or invitations, the app creates an "
+                     "<strong>anonymous account</strong>: a random identifier without an email address or "
+                     "phone number.</p>")
         s.append("<p><strong>What data:</strong> the anonymous identifier, the player name you set in the "
                  "app, avatar, frame and level, the chosen category, the questions, your answers and "
                  "points per round, timestamps, and connection data (IP address, time). Your opponent "
@@ -312,7 +414,8 @@ def privacy_en(app: dict) -> str:
                  "result.</p>")
         s.append("<p><strong>How long:</strong> matchmaking entries for at most one day, duel data for "
                  "seven days after the match ends. We delete anonymous accounts after "
-                 f"{v(ON['anonymous_account_days'])} days without use. We keep invitation data as long as "
+                 f"{v(ON['anonymous_account_days'])} days without use, together with the data linked to "
+                 "them. We keep invitation data as long as "
                  f"needed to credit rewards, for at most {v(ON['referral_months'])} months.</p>")
         s.append("<p><strong>Legal basis:</strong> performance of the contract for the feature you chose "
                  "(Art. 6(1)(b) GDPR). Transfers to the USA are covered as described in section 4.</p>")
@@ -320,6 +423,52 @@ def privacy_en(app: dict) -> str:
             s.append("<p>The app also downloads new questions from the same server. Apart from the "
                      "technically necessary connection data (IP address, time), no data about you is "
                      "transmitted.</p>")
+        nr += 1
+    if "online" in f and "rankings" in f:
+        vis = html.escape(app.get("rankings_setting_en", "Settings → “Show me in rankings”"))
+        s.append(f"<h2>{nr}. Rankings, league, recordings and challenges</h2>")
+        s.append("<p><strong>Rankings:</strong> For the monthly rankings (Daily Challenge and Survival), "
+                 "the following goes to the server: start time of each round, Daily Challenge points and "
+                 "answer time, the values of a Survival run (questions answered and correct, revives, "
+                 "playing time), your player name, avatar and frame, and rewards received. Others see "
+                 "your player name (or “Player” with a number), avatar, frame, rank and score.</p>")
+        s.append("<p><strong>League:</strong> The server calculates monthly points and results from your "
+                 "Arena duels.</p>")
+        s.append("<p><strong>Recordings:</strong> If no live opponent is found in the Arena, the app may "
+                 "replay a finished duel of a real player. Your player name, avatar, frame and level as "
+                 "well as your answers and answer times from a duel may be shown to others in this way "
+                 "for up to seven days.</p>")
+        s.append("<p><strong>Challenges:</strong> If you challenge a friend with a code, they see your "
+                 "player name, avatar, frame, level, your answers and your result.</p>")
+        s.append("<p><strong>Reporting:</strong> Player names in rankings can be reported. We store who "
+                 "reported which entry and review reported names.</p>")
+        s.append(f"<p><strong>Your choice:</strong> If you turn off <em>{vis}</em>, you appear in no "
+                 "ranking, are not shown as a recording and receive no ranking rewards.</p>")
+        s.append("<p><strong>How long:</strong> ranking and league data, rewards and reports for 13 "
+                 "months, recordings and challenges for 30 days.</p>")
+        s.append("<p><strong>Legal basis:</strong> performance of the contract for the feature you chose "
+                 "(Art. 6(1)(b) GDPR); for reviewing reported names, our legitimate interest in fair and "
+                 "respectful play (Art. 6(1)(f) GDPR).</p>")
+        nr += 1
+    if "online" in f and "cloud_save" in f:
+        s.append(f"<h2>{nr}. Backup of your progress</h2>")
+        s.append("<p>So that your progress isn’t lost, the app keeps a copy of it on the server and syncs "
+                 "it when you start and leave the app: coins, experience and level, achievements, "
+                 "statistics, unlocked content, player name and avatar, streaks, daily tasks, league "
+                 "standing and best scores. Subscriptions (restored by the store), energy and device "
+                 "settings are not backed up.</p>")
+        s.append("<p><strong>How long:</strong> We delete a copy that hasn’t changed for 400 days. The "
+                 "copy is also deleted together with the anonymous account.</p>")
+        s.append("<p><strong>Legal basis:</strong> providing the app with saved progress "
+                 "(Art. 6(1)(b) GDPR).</p>")
+        nr += 1
+    if app.get("report_question"):
+        s.append(f"<h2>{nr}. Reporting questions</h2>")
+        s.append("<p>If you report a question, the app opens your email app with a prepared message "
+                 "(question ID and text, your comment). You send the email yourself. We then receive "
+                 "your email address and the content, use both only to check the question and reply "
+                 "to you if needed, and delete the email once the report has been dealt with. The legal "
+                 "basis is our legitimate interest in correct questions (Art. 6(1)(f) GDPR).</p>")
         nr += 1
     if "local_network" in f:
         s.append(f"<h2>{nr}. Local match on the same Wi-Fi</h2>")

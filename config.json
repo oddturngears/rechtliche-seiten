@@ -34,7 +34,9 @@
         "online",
         "local_network",
         "share",
-        "question_updates"
+        "question_updates",
+        "rankings",
+        "cloud_save"
       ],
       "privacy_setting_de": "Einstellungen → „Datenschutz“",
       "privacy_setting_en": "Settings → “Privacy”",
@@ -42,7 +44,9 @@
       "restore_en": "Premium page (via Shop or Profile) → “Restore purchases”",
       "rewarded_de": "zum Beispiel für Energie oder zusätzliche Münzen",
       "rewarded_en": "for example for energy or extra coins",
-      "report_question": true
+      "report_question": true,
+      "updated": "26.11.2026",
+      "updated_en": "November 26, 2026"
     },
     {
       "slug": "dailylogic",
